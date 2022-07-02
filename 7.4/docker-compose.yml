@@ -6,5 +6,13 @@ services:
     volumes:
       - ./config-custom/nginx.conf:/etc/nginx/nginx.conf
       - ./config-custom/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    ports:
-      - "80:80"
+    # ports:
+    #   - "80:80"
+    environment:
+      - VIRTUAL_HOST=test.local
+    networks:
+      - nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true
