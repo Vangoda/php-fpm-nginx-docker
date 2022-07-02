@@ -26,12 +26,12 @@ RUN apk add --no-cache supervisor
 # Install git, nodejs, postfix, curl and npm
 # RUN apk add nginx
 
-# Copy Xdebug configuration
-COPY ./docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-# Copy Nginx configuration
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-# Copy Supervisord configuration
-COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Copy default Xdebug configuration
+COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# Copy default Nginx configuration
+COPY ./config-default/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy default Supervisord configuration
+COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Copy test index.php file to server root
 COPY ./index.php /var/www/html/index.php
 
