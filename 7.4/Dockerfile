@@ -23,8 +23,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
 RUN apk update && apk add --no-cache nginx
 # Install supervisor for process management
 RUN apk add --no-cache supervisor
-# Install git, nodejs, postfix, curl and npm
-# RUN apk add nginx
+# Install git
+RUN apk add --no-cache git
+# Install bash
+RUN apk add --no-cache bash
 
 # Copy default Xdebug configuration
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
