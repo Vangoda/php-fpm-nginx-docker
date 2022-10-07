@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  php-fpm-nginx:
+    image: vangoda/php-fpm-alpine-5.6:0.1
+    volumes:
+      - ./config-custom/nginx.conf:/etc/nginx/nginx.conf
+      - ./config-custom/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    environment:
+      - VIRTUAL_HOST=test.local
+    networks:
+      - nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true
