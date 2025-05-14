@@ -1,6 +1,6 @@
 # Dev image containing phpfpm and nginx
 # Start with official php fpm
-FROM php:8.2.6-fpm-alpine
+FROM php:8.2.28-fpm-alpine
 
 # Add mlocatis php extension installer
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -18,11 +18,12 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
   pdo_mysql \
   sodium \
   xdebug \
-  zip
+  zip \
+  bcmath
 # Install NGINX
 RUN apk update && apk add --no-cache nginx
 # Install supervisor for process management
-RUN apk add --no-cache supervisor
+RUN apk add --no-cache supervisor 
 # Install git
 RUN apk add --no-cache git
 # Install bash
