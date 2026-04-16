@@ -1,6 +1,6 @@
 # Dev image containing phpfpm and nginx
 # Start with official php fpm
-FROM php:8.2.28-fpm-alpine
+FROM php:8.2.30-fpm-alpine
 
 # Add mlocatis php extension installer
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
