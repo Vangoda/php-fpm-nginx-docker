@@ -19,7 +19,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
   sodium \
   xdebug \
   zip \
-  bcmath
+  bcmath \
+  imap
 # Install NGINX
 RUN apk update && apk add --no-cache nginx
 # Install supervisor for process management
