@@ -1,0 +1,24 @@
+# Php FPM with NGINX, supervisor and some additional php extensions like xdebug
+# and composer. This is intended to be used as a base to extend with additional
+# features, such as in vangoda/web-base-dev which adds npm.
+services:
+  php-fpm-nginx:
+    image: vangoda/php-fpm-alpine8.4
+    volumes:
+      - ./config-custom/nginx.conf:/etc/nginx/nginx.conf
+      - ./config-custom/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      # Keep vscode remote server in volume to avoid reinstalling
+      - vscode:/root/.vscode-server
+    # ports:
+    #   - "80:80"
+    environment:
+      - VIRTUAL_HOST=test.local
+    networks:
+      - nginx-proxy
+
+volumes:
+  vscode:
+
+networks:
+  nginx-proxy:
+    external: true
