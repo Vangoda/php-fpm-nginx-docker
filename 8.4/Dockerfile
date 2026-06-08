@@ -51,6 +51,10 @@ COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Example app file
 COPY ./index.php /var/www/html/index.php
 
+# entrypoint to expose/apply configs
+COPY ./config-default/entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Permissions and user (same as now)
 RUN chown -R www-data:www-data /var/www/html /run /var/lib/nginx /var/log/nginx
 USER www-data
