@@ -10,7 +10,7 @@ ARG PHP_FPM_TAG=8.4-fpm-alpine
 FROM php:${PHP_FPM_TAG} AS php-build
 
 RUN apk add --no-cache curl ca-certificates \
- && update-ca-certificates
+        && update-ca-certificates
 
 # mlocati installer
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -18,19 +18,19 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 
 # Install extensions (same list you use now)
 RUN install-php-extensions \
-    @composer \
-    exif \
-    gd \
-    imagick \
-    json_post \
-    mysqli \
-    opcache \
-    pdo_mysql \
-    sodium \
-    xdebug \
-    zip \
-    bcmath \
-    imap
+        @composer \
+        exif \
+        gd \
+        imagick \
+        json_post \
+        mysqli \
+        opcache \
+        pdo_mysql \
+        sodium \
+        xdebug \
+        zip \
+        bcmath \
+        imap
 
 # =========================
 # Stage 2: runtime
@@ -39,14 +39,14 @@ FROM php:${PHP_FPM_TAG} AS php-runtime
 
 # Runtime OS deps only (no build deps)
 RUN apk add --no-cache \
-    nginx \
-    supervisor \
-    git \
-    bash \
-    gettext \
-    ca-certificates \
-&& update-ca-certificates \
-&& mkdir -p /run/nginx /var/log/supervisor
+        nginx \
+        supervisor \
+        git \
+        bash \
+        gettext \
+        ca-certificates \
+    && update-ca-certificates \
+    && mkdir -p /run/nginx /var/log/supervisor
 
 # Copy PHP extensions + ini from build stage
 COPY --from=php-build /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
