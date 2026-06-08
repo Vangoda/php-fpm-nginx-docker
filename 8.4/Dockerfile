@@ -77,8 +77,9 @@ USER www-data
 WORKDIR /var/www/html
 EXPOSE 80
 
-# Supervisor runs php-fpm + nginx
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Run the entrypont script. Copies default configs to custom dir and starts 
+# supervisor.
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
 
-# Optional: fix your healthcheck URL (missing colon in current file)
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:80/fpm-ping || exit 1
+# PING the server to check health
+HEALTHCHECK --timeout=10s CMD wget -qO- http://127.0.0.1:80/fpm-ping || exit 1
