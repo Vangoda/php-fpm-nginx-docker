@@ -72,7 +72,6 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Permissions and user (same as now)
 RUN chown -R www-data:www-data /var/www/html /run /var/lib/nginx /var/log/nginx
-USER www-data
 
 WORKDIR /var/www/html
 EXPOSE 80
