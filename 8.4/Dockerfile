@@ -1,18 +1,24 @@
 # vangoda/php-fpm-alpine-8.4.Dockerfile
 # Base PHP-FPM 8.4 + nginx + supervisord image
 
+ARG PHP_FPM_TAG=8.4-fpm-alpine
+
+
 # =========================
 # Stage 1: build extensions
 # =========================
-ARG PHP_FPM_TAG=8.4-fpm-alpine
 FROM php:${PHP_FPM_TAG} AS php-build
+
+RUN apk add --no-cache curl ca-certificates \
+ && update-ca-certificates
 
 # mlocati installer
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions
 
 # Install extensions (same list you use now)
-RUN install-php-extensions @composer \
+RUN install-php-extensions \
+    @composer \
     exif \
     gd \
     imagick \
@@ -27,7 +33,7 @@ RUN install-php-extensions @composer \
     imap
 
 # =========================
-# Stage 1: runtime
+# Stage 2: runtime
 # =========================
 FROM php:${PHP_FPM_TAG} AS php-runtime
 
@@ -37,15 +43,24 @@ RUN apk add --no-cache \
     supervisor \
     git \
     bash \
-    curl
+    gettext \
+    ca-certificates \
+&& update-ca-certificates \
+&& mkdir -p /run/nginx /var/log/supervisor
 
 # Copy PHP extensions + ini from build stage
 COPY --from=php-build /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=php-build /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
-# Configs (same locations as now)
-COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# --------------------------------------------------------------------
+# nginx + PHP config layout
+# - /opt/config-custom: per-project overrides (bind-mounted from host)
+# --------------------------------------------------------------------
+RUN mkdir -p /opt/config-custom
+
+# Copy default configs to default locations
 COPY ./config-default/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Example app file
