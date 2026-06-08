@@ -1,4 +1,5 @@
 # vangoda/php-fpm-alpine-8.4.Dockerfile
+# Base PHP-FPM 8.4 + nginx + supervisord image
 
 # =========================
 # Stage 1: build extensions
@@ -26,7 +27,7 @@ RUN install-php-extensions @composer \
     imap
 
 # =========================
-# Stage 2: runtime
+# Stage 1: runtime
 # =========================
 FROM php:${PHP_FPM_TAG} AS php-runtime
 
