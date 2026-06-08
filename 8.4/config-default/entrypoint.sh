@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-CUSTOM_ROOT="/opt/custom-config"
+CUSTOM_ROOT="/opt/config-custom"
 
 # Seed the host-visible config dir with current defaults (first run)
 if [ -z "$(ls -A "$CUSTOM_ROOT" 2>/dev/null)" ]; then
