@@ -5,8 +5,7 @@ services:
   php-fpm-nginx:
     image: vangoda/php-fpm-alpine8.4
     volumes:
-      - ./config-custom/nginx.conf:/etc/nginx/nginx.conf
-      - ./config-custom/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./config-custom/:/opt/config-custom
       # Keep vscode remote server in volume to avoid reinstalling
       - vscode:/root/.vscode-server
     # ports:
