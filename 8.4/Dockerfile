@@ -45,8 +45,8 @@ RUN apk add --no-cache \
         bash \
         gettext \
         ca-certificates \
-    && update-ca-certificates \
-    && mkdir -p /run/nginx /var/log/supervisor
+        && update-ca-certificates \
+        && mkdir -p /run/nginx /var/log/supervisor
 
 # Copy PHP extensions + ini from build stage
 COPY --from=php-build /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -59,7 +59,7 @@ COPY --from=php-build /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 RUN mkdir -p /opt/config-custom
 
 # Copy default configs to default locations
-COPY ./config-default/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./config-default/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

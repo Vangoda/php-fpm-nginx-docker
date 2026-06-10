@@ -8,7 +8,7 @@ if [ -z "$(ls -A "$CUSTOM_ROOT" 2>/dev/null)" ]; then
   echo "Seeding /opt/custom-config from current defaults..."
 
   # Copy current in-image configs into custom root
-  cp -n /etc/nginx/conf.d/default.conf \
+  cp -n /etc/nginx/http.d/default.conf \
     "$CUSTOM_ROOT/nginx.conf" 2>/dev/null || true
 
   cp -n /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -20,7 +20,7 @@ fi
 
 # Now always apply configs from custom root (host edits win)
 if [ -f "$CUSTOM_ROOT/nginx.conf" ]; then
-  cp "$CUSTOM_ROOT/nginx.conf" /etc/nginx/conf.d/default.conf
+  cp "$CUSTOM_ROOT/nginx.conf" /etc/nginx/http.d/default.conf
 fi
 
 if [ -f "$CUSTOM_ROOT/docker-php-ext-xdebug.ini" ]; then
