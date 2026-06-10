@@ -3,7 +3,9 @@
 # features, such as in vangoda/web-base-dev which adds npm.
 services:
   php-fpm-nginx:
+    build: .
     image: vangoda/php-fpm-alpine8.4
+    pull_policy: build
     volumes:
       - ./config-custom/:/opt/config-custom
       # Keep vscode remote server in volume to avoid reinstalling
