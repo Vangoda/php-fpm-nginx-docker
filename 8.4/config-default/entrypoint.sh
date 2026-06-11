@@ -16,6 +16,9 @@ if [ -z "$(ls -A "$CUSTOM_ROOT" 2>/dev/null)" ]; then
 
   cp -n /etc/supervisor/conf.d/supervisord.conf \
     "$CUSTOM_ROOT/supervisord.conf" 2>/dev/null || true
+
+  cp -n /usr/local/etc/php/conf.d/php.ini \
+    "$CUSTOM_ROOT/php.ini" 2>/dev/null || true
 fi
 
 # Now always apply configs from custom root (host edits win)
@@ -30,6 +33,10 @@ fi
 
 if [ -f "$CUSTOM_ROOT/supervisord.conf" ]; then
   cp "$CUSTOM_ROOT/supervisord.conf" /etc/supervisor/conf.d/supervisord.conf
+fi
+
+if [ -f "$CUSTOM_ROOT/php.ini" ]; then
+  cp "$CUSTOM_ROOT/php.ini" /usr/local/etc/php/conf.d/php.ini
 fi
 
 # Start php-fpm + nginx

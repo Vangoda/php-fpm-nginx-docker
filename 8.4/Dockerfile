@@ -62,6 +62,7 @@ RUN mkdir -p /opt/config-custom
 COPY ./config-default/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./config-default/php.ini /usr/local/etc/php/conf.d/php.ini
 
 # Example app file
 COPY ./index.php /var/www/html/index.php
