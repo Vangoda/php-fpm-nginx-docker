@@ -40,6 +40,7 @@ FROM php:${PHP_FPM_TAG} AS php-runtime
 # Runtime OS deps only (no build deps)
 RUN apk add --no-cache \
         nginx \
+        curl \
         supervisor \
         git \
         bash \
@@ -63,6 +64,7 @@ COPY ./config-default/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./config-default/php.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./config-default/zz-healthcheck.conf /usr/local/etc/php-fpm.d/zz-healthcheck.conf
 
 # Example app file
 COPY ./index.php /var/www/html/index.php
@@ -82,4 +84,5 @@ EXPOSE 80
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
 
 # PING the server to check health
-HEALTHCHECK --timeout=10s CMD wget -qO- http://127.0.0.1:80/fpm-ping || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD response="$(curl --silent --show-error --fail --max-time 5 http://127.0.0.1:80/fpm-ping)" && [ "$response" = pong ]

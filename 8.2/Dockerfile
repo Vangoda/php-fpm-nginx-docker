@@ -22,7 +22,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
   bcmath \
   imap
 # Install NGINX
-RUN apk update && apk add --no-cache nginx
+RUN apk update && apk add --no-cache nginx curl
 # Install supervisor for process management
 RUN apk add --no-cache supervisor 
 # Install git
@@ -34,6 +34,7 @@ RUN apk add --no-cache bash
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # Copy default Nginx configuration
 COPY ./config-default/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./config-default/zz-healthcheck.conf /usr/local/etc/php-fpm.d/zz-healthcheck.conf
 # Copy default Supervisord configuration
 COPY ./config-default/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Copy test index.php file to server root
@@ -49,4 +50,5 @@ EXPOSE 80
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
-HEALTHCHECK --timeout=10s CMD curl --silent --fail https//127.0.0.1:80/fpm-ping
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD response="$(curl --silent --show-error --fail --max-time 5 http://127.0.0.1:80/fpm-ping)" && [ "$response" = pong ]
