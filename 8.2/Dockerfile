@@ -25,14 +25,15 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
 RUN apk update && apk add --no-cache nginx curl
 # Install supervisor for process management
 RUN apk add --no-cache supervisor 
-# Install git
-RUN apk add --no-cache git
-# Install bash
-RUN apk add --no-cache bash
+RUN apk add --no-cache \
+  bash ca-certificates git github-cli ripgrep jq python3 py3-pip \
+  openssh-client-default rsync sqlite zip unzip tar gzip \
+  coreutils findutils grep sed diffutils patch procps-ng
 
 # Copy default Xdebug configuration
 COPY ./config-default/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # Copy default Nginx configuration
+COPY ./config-default/nginx-main.conf /etc/nginx/nginx.conf
 COPY ./config-default/nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./config-default/zz-healthcheck.conf /usr/local/etc/php-fpm.d/zz-healthcheck.conf
 # Copy default Supervisord configuration
